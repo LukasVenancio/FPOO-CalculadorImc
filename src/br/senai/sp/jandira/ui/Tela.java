@@ -10,7 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import br.senai.sp.jandira.calc.Calculo;
+import br.senai.sp.jandira.model.Calculo;
+import br.senai.sp.jandira.model.DeterminadorImc;
 
 public class Tela {
 
@@ -18,7 +19,7 @@ public class Tela {
 
 		JFrame tela = new JFrame("Calculadora de IMC");
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		tela.setSize(450, 600);
+		tela.setSize(450, 500);
 		tela.setLayout(null);
 
 		// Componentes da tela
@@ -63,8 +64,8 @@ public class Tela {
 		lblRetornoValor.setBounds(120, 200, 100, 330);
 		lblRetornoValor.setFont(new Font("Serif", Font.PLAIN, 15));
 
-		JLabel lblRetornoEstado = new JLabel("AQUI VIRÁ UM RESULTADO!");
-		lblRetornoEstado.setBounds(120, 250, 100, 330);
+		JLabel lblRetornoEstado = new JLabel();
+		lblRetornoEstado.setBounds(120, 250, 500, 330);
 		lblRetornoEstado.setFont(new Font("Serif", Font.PLAIN, 15));
 
 		tela.getContentPane().add(lblTitulo);
@@ -86,18 +87,47 @@ public class Tela {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				String Altura = txtAltura.getText();
-				double valorAltura = Double.parseDouble(Altura);
-
-				String Peso = txtPeso.getText();
-				double valorPeso = Double.parseDouble(Peso);
+				double valorAltura = Double.valueOf(txtAltura.getText());
+				double valorPeso = Double.valueOf(txtPeso.getText());
 				
-				Calculo calculadora = new Calculo();
-				calculadora.setAltura(valorAltura);
-				calculadora.setPeso(valorPeso);
+				Calculo calculo = new Calculo();
 				
-				System.out.println(calculadora.getResultado());
+				calculo.setResultado(valorPeso, valorAltura);
 
+				lblRetornoValor.setText(String.valueOf(calculo.getResultado()));
+				double retornoValor = calculo.getResultado();
+				
+				DeterminadorImc determinadora = new DeterminadorImc();
+				determinadora.setEstado(retornoValor);
+				
+				lblRetornoEstado.setText(determinadora.getEstado());
+				
+				if(calculo.getResultado() <= 18.5 ) {
+					lblRetornoValor.setForeground(Color.BLUE);
+					lblRetornoEstado.setForeground(Color.BLUE);		
+					
+				}else if(calculo.getResultado() > 18.5 && calculo.getResultado() < 25) {
+					lblRetornoValor.setForeground(Color.green);
+					lblRetornoEstado.setForeground(Color.green);
+					
+				}else if(calculo.getResultado() >= 25 && calculo.getResultado() < 30) {
+					lblRetornoValor.setForeground(Color.cyan);
+					lblRetornoEstado.setForeground(Color.cyan);
+					
+				}else if(calculo.getResultado() >= 30 && calculo.getResultado() < 35) {
+					lblRetornoValor.setForeground(Color.yellow);
+					lblRetornoEstado.setForeground(Color.yellow);
+					
+				}else if(calculo.getResultado() >= 35 && calculo.getResultado() < 40) {
+					lblRetornoValor.setForeground(Color.orange);
+					lblRetornoEstado.setForeground(Color.orange);
+					
+				}else if(calculo.getResultado() >= 40) {
+					lblRetornoValor.setForeground(Color.red);
+					lblRetornoEstado.setForeground(Color.red);
+					
+				}
+				
 			}
 		});
 
